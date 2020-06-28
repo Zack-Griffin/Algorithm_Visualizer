@@ -222,27 +222,6 @@ def a_star(done, search_list):
             canvas.itemconfig(i.node, fill="blue")
 
         root.after(10, lambda: a_star(done, search_list))
-    # while len(search_list) > 0 and not done:
-    #     #sorting list by sum cost to get next lowest
-    #     search_list.sort(key=operator.attrgetter("sum_cost"))
-    #     #removing from list and setting as current node
-    #     current = search_list.pop(0)
-    #     #getting successors of current node
-    #     s = get_successors(current)
-    #     #adding successors to search list
-    #     search_list += s
-    #     #search through all valid successors
-    #     for i in s:
-    #         #if is finish node
-    #         if i.is_finish:
-    #             #set done flag 
-    #             done = True
-    #             #trace parent path back to start
-    #             trace_path(i)
-    #             #break from loop 
-    #             break
-    #         #color blue to visually mark as searched
-    #         canvas.itemconfig(i.node, fill="blue")
 
 
 def bfs():
