@@ -19,7 +19,6 @@ node_size = 25
 node_list = [list(range(WIDTH//node_size)) for i in range(HEIGHT//node_size)]
 
 #creating global storage variables for start and end nodes 
-#TODO: might be better to simply clear board when changing nodes instead of storing them 
 start = n.Node()
 end = n.Node()
 
