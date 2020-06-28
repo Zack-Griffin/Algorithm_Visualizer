@@ -1,6 +1,7 @@
 import tkinter as tk
 import node as n
 import operator
+from time import sleep
 
 
 #setting up window
@@ -18,9 +19,11 @@ canvas.pack()
 node_size = 25
 node_list = [list(range(WIDTH//node_size)) for i in range(HEIGHT//node_size)]
 
-#creating global storage variables for start and end nodes 
+#creating global storage variables 
 start = n.Node()
 end = n.Node()
+search_list = []
+done = False
 
 def create_menu():
     #variable for radio button
@@ -39,8 +42,8 @@ def create_menu():
     
     #adding 'draw' to menu
     menu.add_cascade(label='Draw', menu=draw)
-    menu.add_command(label="Start", command=a_star)
-    menu.add_command(label="Clear", command=clear)
+    menu.add_command(label="Start", command=lambda: a_star(done, search_list))
+    menu.add_command(label="Clear", command=lambda: clear(done))
     
 def set_bindings(var):
     #resettting bindings
@@ -106,20 +109,24 @@ def set_start(event):
     # x and y pixel cords by the size of each node
     x = event.x // node_size
     y = event.y // node_size
-    #delcaring global start node to avoid reference errors
-    global start
-    
+
     #clearing old start node
-    start.is_start = False
-    start.is_searched = False
-    canvas.itemconfig(start.node, fill='white')
+    node = node_list[start.x][start.y]
+    if node in search_list:
+        search_list.remove(node)
+        node.is_start = False
+        node.is_searched = False
+        canvas.itemconfig(node.node, fill='white')
     
     #setting new start node and clearing old data
-    start = node_list[x][y]
-    start.is_start = True
-    start.is_wall = False
-    start.is_finish = False
-    start.is_searched = True
+    node = node_list[x][y]
+    node.is_start = True
+    node.is_wall = False
+    node.is_finish = False
+    node.is_searched = True
+    #adding to search list for a-star
+    search_list.append(node)
+    start.copy(node)
 
     #change color of node to green
     canvas.itemconfig(start.node, fill='green')
@@ -130,21 +137,20 @@ def set_finish(event):
     x = event.x // node_size
     y = event.y // node_size
 
-    #delcaring global end node to avoid reference errors
-    global end
-
     #clearing old end node
-    end.is_finish = False
-    canvas.itemconfig(end.node, fill='white')
+    node = node_list[end.x][end.y]
+    node.is_finish = False
+    canvas.itemconfig(node.node, fill='white')
 
     #setting new end node and clearing old data
-    end = node_list[x][y]
-    end.is_finish = True
-    end.is_wall = False
-    end.is_start = False
+    node = node_list[x][y]
+    node.is_finish = True
+    node.is_wall = False
+    node.is_start = False
 
     #change color of node to red
-    canvas.itemconfig(end.node, fill='red')
+    canvas.itemconfig(node.node, fill='red')
+    end.copy(node)
 
 def get_successors(q):
     successors = []
@@ -191,12 +197,9 @@ def trace_path(node):
         canvas.itemconfig(n.node, fill="yellow")
         n = n.parent_node
 
-def a_star():
-    search_list = []
-    done = False
-    search_list.append(start)
-    
-    while len(search_list) > 0 and not done:
+def a_star(done, search_list):
+
+    if not done:
         #sorting list by sum cost to get next lowest
         search_list.sort(key=operator.attrgetter("sum_cost"))
         #removing from list and setting as current node
@@ -217,15 +220,42 @@ def a_star():
                 break
             #color blue to visually mark as searched
             canvas.itemconfig(i.node, fill="blue")
-        
+
+        root.after(10, lambda: a_star(done, search_list))
+    # while len(search_list) > 0 and not done:
+    #     #sorting list by sum cost to get next lowest
+    #     search_list.sort(key=operator.attrgetter("sum_cost"))
+    #     #removing from list and setting as current node
+    #     current = search_list.pop(0)
+    #     #getting successors of current node
+    #     s = get_successors(current)
+    #     #adding successors to search list
+    #     search_list += s
+    #     #search through all valid successors
+    #     for i in s:
+    #         #if is finish node
+    #         if i.is_finish:
+    #             #set done flag 
+    #             done = True
+    #             #trace parent path back to start
+    #             trace_path(i)
+    #             #break from loop 
+    #             break
+    #         #color blue to visually mark as searched
+    #         canvas.itemconfig(i.node, fill="blue")
+
+
 def bfs():
     pass
 
-def clear():
+def clear(done):
     #resetting node list, clearing canvas, and redrawing nodes
     node_list = [list(range(WIDTH//node_size)) for i in range(HEIGHT//node_size)]
     canvas.delete("all")
-    draw_nodes();
+    draw_nodes()
+    done = False
+    search_list.clear()
+
 
 def main():
     draw_nodes()
