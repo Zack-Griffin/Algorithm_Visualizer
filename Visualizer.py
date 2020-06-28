@@ -1,7 +1,6 @@
 import tkinter as tk
 import node as n
 import operator
-from time import sleep
 
 
 #setting up window
