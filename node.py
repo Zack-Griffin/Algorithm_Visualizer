@@ -22,3 +22,16 @@ class Node:
         #setting x and y values
         self.x = x // node_size
         self.y = y // node_size
+    
+    def copy(self, node):
+        self.x = node.x
+        self.y = node.y
+        self.is_start = node.is_start
+        self.is_finish = node.is_finish
+        self.is_wall = node.is_wall
+        self.node = node.node
+        self.move_cost = node.move_cost
+        self.estimate_cost = node.estimate_cost
+        self.sum_cost = node.sum_cost
+        self.parent_node = node.parent_node
+        self.is_searched = node.is_searched
