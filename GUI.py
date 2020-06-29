@@ -16,7 +16,6 @@ class Window():
         self.node_list = [list(range(w//n.node_size)) for i in range(h//n.node_size)]
         self.start = n()
         self.end = n()
-        self.search_list = []
 
         #setting up menu and GUI
         #create menu object
@@ -122,21 +121,16 @@ class Window():
         x = event.x // n.node_size
         y = event.y // n.node_size
 
-        if self.start in self.search_list:
-            self.search_list.remove(self.start)
-            self.start.is_start = False
-            self.start.is_searched = False
-            self.canvas.itemconfig(self.start.node, fill='white')
+        self.start.is_start = False
+        self.canvas.itemconfig(self.start.node, fill='white')
+        self.node_list[self.start.x][self.start.y] = self.start
         
         #setting new start node and clearing old data
         self.start = self.node_list[x][y]
         self.start.is_start = True
         self.start.is_wall = False
         self.start.is_finish = False
-        self.start.is_searched = True
 
-        #adding to search list for a-star
-        self.search_list.append(self.start)
         #change color of node to green
         self.canvas.itemconfig(self.start.node, fill='green')
 
@@ -163,7 +157,8 @@ class Window():
         #resetting node list, clearing canvas, and redrawing nodes
         self.canvas.delete("all")
         self.__draw_nodes()
-        self.search_list.clear()
+        
+
 
     def trace_path(self, node):
         #getting parent node of finish

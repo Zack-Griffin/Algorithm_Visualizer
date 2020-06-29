@@ -39,19 +39,27 @@ def get_successors(q, app):
 
     return successors
 
-def a_star(done, app):
+def a_star(done, search_list, app):
+
+    if not app.start.is_searched:
+        #clearing trasy from search list
+        search_list.clear()
+        #adding start node and setting it as searched
+        search_list.append(app.start)
+        app.start.is_searched = True
+
     if not done:
         try:
             #sorting list by sum cost to get next lowest
-            app.search_list.sort(key=operator.attrgetter("sum_cost"))
+            search_list.sort(key=operator.attrgetter("sum_cost"))
 
             #removing start of list and setting as current node
-            current = app.search_list.pop(0)
+            current = search_list.pop(0)
 
             #getting successors of current node
             s = get_successors(current, app)
             #adding successors to search list
-            app.search_list += s
+            search_list += s
 
             #search through all valid successors
             for i in s:
@@ -66,11 +74,10 @@ def a_star(done, app):
                 #color blue to visually mark as searched
                 app.canvas.itemconfig(i.node, fill="blue")
             #recalling function after 10 ms
-            app.master.after(10, lambda: a_star(done, app))
+            app.master.after(10, lambda: a_star(done, search_list, app))
         except IndexError:
             #opening a text box window to display error message
             app.new_text_window("Could not find shortest path", "-*-lucidatypewriter-medium-r-*-*-*-140-*-*-*-*-*-*")
-
 
 def bfs():
     pass
@@ -80,16 +87,18 @@ def main():
     root = tk.Tk()
     root.title("Visualizer")
     root.resizable(False, False)
-    #setting height and width
+    #setting height and width of app
     WIDTH = 750
     HEIGHT = 750
-
-    done = False
     #creating app
     app = GUI.Window(root, HEIGHT, WIDTH)
 
+    #flag for algorithm finishing
+    done = False
+    search_list = []
+
     #created button for new algotithm
-    app.menu.add_command(label="A-star", command=lambda: a_star(done, app))
+    app.menu.add_command(label="A-star", command=lambda: a_star(done, search_list, app))
 
     #starting event loop
     root.mainloop()
