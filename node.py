@@ -1,4 +1,5 @@
 class Node:
+    node_size = 25
     def __init__(self):
         #x and y values of the current node
         self.x = 0
@@ -16,13 +17,6 @@ class Node:
         self.parent_node = None
         self.is_searched = False
 
-    def draw(self, canvas, x, y, node_size):
-        #drawing the node onto the gui
-        self.node = canvas.create_rectangle([(x, y), (x+node_size, y+node_size)], fill='white', tags="node")
-        #setting x and y values
-        self.x = x // node_size
-        self.y = y // node_size
-    
     def copy(self, node):
         self.x = node.x
         self.y = node.y
