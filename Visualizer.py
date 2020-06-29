@@ -41,34 +41,39 @@ def get_successors(q, app):
 
 def a_star(done, app):
     if not done:
-        #sorting list by sum cost to get next lowest
-        app.search_list.sort(key=operator.attrgetter("sum_cost"))
-        #removing from list and setting as current node
-        current = app.search_list.pop(0)
+        try:
+            #sorting list by sum cost to get next lowest
+            app.search_list.sort(key=operator.attrgetter("sum_cost"))
 
-        #getting successors of current node
-        s = get_successors(current, app)
-        #adding successors to search list
-        app.search_list += s
+            #removing start of list and setting as current node
+            current = app.search_list.pop(0)
 
-        #search through all valid successors
-        for i in s:
-            #if is finish node
-            if i.is_finish:
-                #set done flag 
-                done = True
-                #trace parent path back to start
-                app.trace_path(i)
-                #break from loop 
-                break
-            #color blue to visually mark as searched
-            app.canvas.itemconfig(i.node, fill="blue")
+            #getting successors of current node
+            s = get_successors(current, app)
+            #adding successors to search list
+            app.search_list += s
 
-        app.master.after(10, lambda: a_star(done, app))
+            #search through all valid successors
+            for i in s:
+                #if is finish node
+                if i.is_finish:
+                    #set done flag 
+                    done = True
+                    #trace parent path back to start
+                    app.trace_path(i)
+                    #break from loop 
+                    break
+                #color blue to visually mark as searched
+                app.canvas.itemconfig(i.node, fill="blue")
+            #recalling function after 10 ms
+            app.master.after(10, lambda: a_star(done, app))
+        except IndexError:
+            #opening a text box window to display error message
+            app.new_text_window("Could not find shortest path", "-*-lucidatypewriter-medium-r-*-*-*-140-*-*-*-*-*-*")
 
 
 def bfs():
-#     pass
+    pass
 
 def main():
     #setting up main window

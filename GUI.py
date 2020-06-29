@@ -134,7 +134,7 @@ class Window():
         self.start.is_wall = False
         self.start.is_finish = False
         self.start.is_searched = True
-        
+
         #adding to search list for a-star
         self.search_list.append(self.start)
         #change color of node to green
@@ -172,3 +172,16 @@ class Window():
         while not n.is_start:
             self.canvas.itemconfig(n.node, fill="yellow")
             n = n.parent_node
+    
+    def new_text_window(self, text, font):
+        #setting up new window
+        newWindow = Toplevel(self.master)  
+        newWindow.geometry("200x50")
+        newWindow.title("Error")
+        newWindow.resizable(False, False)
+        #setting up text
+        Label(newWindow, text=text, font=font).pack()
+        #setting up button
+        button = Button(newWindow, text="OK", command=newWindow.destroy)
+        button.place(x=140, y=30)
+        button.pack()
