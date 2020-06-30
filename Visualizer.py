@@ -131,7 +131,7 @@ def main():
     done = False
     search_list = []
 
-    #created button for new algotithm
+    #create buttons for new algotithm
     app.menu.add_command(label="A-star", command=lambda: a_star(done, search_list, app))
     app.menu.add_command(label="BFS", command=lambda: bfs(done, search_list, app))
 

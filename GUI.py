@@ -163,12 +163,14 @@ class Window():
         #clears current search by resetting serached nodes
         for y in self.node_list:
             for i in y:
+                #if node is searched reset all info
                 if i.is_searched:
                     i.is_searched = False
                     i.parent_node = None
                     i.move_cost = 0
                     i.estimate_cost = 0
                     i.sum_cost = 0
+                    #recolor if not start or end node
                     if not i.is_start and not i.is_finish:
                         self.canvas.itemconfig(i.node, fill="white")
 
