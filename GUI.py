@@ -87,7 +87,7 @@ class Window():
             #getting node
             node = self.node_list[x][y]
             #if not start or finish node then draw wall
-            if not node.is_start and not node.is_finish:
+            if node.is_wall:
                 #set to wall
                 node.is_wall = False
                 #change color of node to black
