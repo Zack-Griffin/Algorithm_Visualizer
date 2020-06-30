@@ -39,7 +39,9 @@ class Window():
         
         #adding 'draw' to menu
         self.menu.add_cascade(label='Draw', menu=draw)
+        self.menu.add_command(label="ResetSearch", command=self.__clear_search)
         self.menu.add_command(label="Clear", command=self.__clear)
+ 
 
     #drawing each node on gui
     def __draw_nodes(self):
@@ -123,7 +125,6 @@ class Window():
 
         self.start.is_start = False
         self.canvas.itemconfig(self.start.node, fill='white')
-        self.node_list[self.start.x][self.start.y] = self.start
         
         #setting new start node and clearing old data
         self.start = self.node_list[x][y]
@@ -158,7 +159,18 @@ class Window():
         self.canvas.delete("all")
         self.__draw_nodes()
         
-
+    def __clear_search(self):
+        #clears current search by resetting serached nodes
+        for y in self.node_list:
+            for i in y:
+                if i.is_searched:
+                    i.is_searched = False
+                    i.parent_node = None
+                    i.move_cost = 0
+                    i.estimate_cost = 0
+                    i.sum_cost = 0
+                    if not i.is_start and not i.is_finish:
+                        self.canvas.itemconfig(i.node, fill="white")
 
     def trace_path(self, node):
         #getting parent node of finish
