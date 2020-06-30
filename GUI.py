@@ -58,7 +58,7 @@ class Window():
                 #draw node
                 node.node = self.canvas.create_rectangle([(x, y), (x+n.node_size, y+n.node_size)], fill='white', tags="node")
                 #add node to list
-                self.node_list[j][i] = node
+                self.node_list[i][j] = node
                 j+=1         
             i+=1
 
@@ -85,7 +85,7 @@ class Window():
 
         try:
             #getting node
-            node = self.node_list[x][y]
+            node = self.node_list[y][x]
             #if not start or finish node then draw wall
             if node.is_wall:
                 #set to wall
@@ -105,7 +105,7 @@ class Window():
         
         try:
             #getting node
-            node = self.node_list[x][y]
+            node = self.node_list[y][x]
             #if not start or finish node then draw wall
             if not node.is_start and not node.is_finish:
                 #set to wall
@@ -127,7 +127,7 @@ class Window():
         self.canvas.itemconfig(self.start.node, fill='white')
         
         #setting new start node and clearing old data
-        self.start = self.node_list[x][y]
+        self.start = self.node_list[y][x]
         self.start.is_start = True
         self.start.is_wall = False
         self.start.is_finish = False
@@ -146,7 +146,7 @@ class Window():
         self.canvas.itemconfig(self.end.node, fill='white')
 
         #setting new end node and clearing old data
-        self.end = self.node_list[x][y]
+        self.end = self.node_list[y][x]
         self.end.is_finish = True
         self.end.is_wall = False
         self.end.is_start = False

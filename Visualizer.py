@@ -6,20 +6,20 @@ def get_successors(q, app):
     successors = []
 
     #validity checking (if in bounds and not a wall or not searched)
-    if q.x+1 < len(app.node_list):
-        node = app.node_list[q.x+1][q.y]
+    if q.x+1 < len(app.node_list[q.y]):
+        node = app.node_list[q.y][q.x+1]
         if not node.is_wall and not node.is_searched:
             successors.append(node)
     if q.x-1 >= 0:
-        node = app.node_list[q.x-1][q.y]
+        node = app.node_list[q.y][q.x-1]
         if not node.is_wall and not node.is_searched:
             successors.append(node)
     if q.y+1 < len(app.node_list):
-        node = app.node_list[q.x][q.y+1]
+        node = app.node_list[q.y+1][q.x]
         if not node.is_wall and not node.is_searched:
             successors.append(node)
     if q.y-1 >= 0:
-        node = app.node_list[q.x][q.y-1]
+        node = app.node_list[q.y-1][q.x]
         if not node.is_wall and not node.is_searched:
             successors.append(node)
 
